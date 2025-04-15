@@ -373,3 +373,167 @@ public class Solution {
      return res.toString();   
     }
 }
+
+/*
+Problem Description
+
+You are given a string A of size N.
+
+
+Return the string A after reversing the string word by word.
+
+NOTE:
+
+A sequence of non-space characters constitutes a word.
+Your reversed string should not contain leading or trailing spaces, even if it is present in the input string.
+If there are multiple spaces between words, reduce them to a single space in the reversed string.
+
+
+
+Problem Constraints
+
+1 <= N <= 3 * 105
+
+
+
+Input Format
+
+The only argument given is string A.
+
+
+
+Output Format
+
+Return the string A after reversing the string word by word.
+
+
+
+Example Input
+
+Input 1:
+A = "the sky is blue"
+Input 2:
+A = "this is ib"
+
+
+Example Output
+
+Output 1:
+"blue is sky the"
+Output 2:
+"ib is this"    
+
+
+Example Explanation
+
+Explanation 1:
+We reverse the string word by word so the string becomes "blue is sky the".
+Explanation 2:
+We reverse the string word by word so the string becomes "ib is this".
+
+*/
+public class Solution {
+    public String solve(String A) {
+        StringBuilder ans = new StringBuilder();
+        int end = A.length();
+        for(int i=A.length()-1 ; i>=0;i--){
+            if(A.charAt(i) == ' '){
+                end=i;
+            }
+            else if(i==0 || A.charAt(i-1)==' '){
+                if(ans.length()>0){
+                    ans.append(' ');
+                }
+                ans.append(A.substring(i,end));
+            }
+            
+        }
+        return ans.toString();
+    }
+}
+/*
+Problem Description
+
+Given a string A of size N, find and return the longest palindromic substring in A.
+
+Substring of string A is A[i...j] where 0 <= i <= j < len(A)
+
+Palindrome string:
+A string which reads the same backwards. More formally, A is palindrome if reverse(A) = A.
+
+Incase of conflict, return the substring which occurs first ( with the least starting index).
+
+
+
+Problem Constraints
+
+1 <= N <= 6000
+
+
+
+Input Format
+
+First and only argument is a string A.
+
+
+
+Output Format
+
+Return a string denoting the longest palindromic substring of string A.
+
+
+
+Example Input
+
+Input 1:
+A = "aaaabaaa"
+Input 2:
+A = "abba
+
+
+Example Output
+
+Output 1:
+"aaabaaa"
+Output 2:
+"abba"
+
+
+Example Explanation
+
+Explanation 1:
+We can see that longest palindromic substring is of length 7 and the string is "aaabaaa".
+Explanation 2:
+We can see that longest palindromic substring is of length 4 and the string is "abba".
+*/
+
+public class Solution {
+    public String longestPalindrome(String A) {
+        if (A == null || A.length() < 1) return "";
+
+        int start = 0;
+        int maxLen = 0;
+
+        for (int i = 0; i < A.length(); i++) {
+            int len1 = expand(A, i, i);       // odd-length palindrome
+            int len2 = expand(A, i, i + 1);   // even-length palindrome
+            int len = Math.max(len1, len2);
+
+            if (len > maxLen) {
+                maxLen = len;
+                start = i - (len - 1) / 2;  // start index of the palindrome
+            }
+        }
+
+        return A.substring(start, start + maxLen);
+    }
+
+    private int expand(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            left--;
+            right++;
+        }
+        return right - left - 1; // actual palindrome length
+    }
+}
+
